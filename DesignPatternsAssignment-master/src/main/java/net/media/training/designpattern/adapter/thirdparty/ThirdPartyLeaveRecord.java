@@ -4,7 +4,7 @@ import net.media.training.designpattern.adapter.Employee;
 
 import java.util.Hashtable;
 import java.util.Map;
-import java.util.Stack;
+//import java.util.Stack;
 
 /**
  * Created by IntelliJ IDEA.
@@ -21,8 +21,8 @@ public final class ThirdPartyLeaveRecord {
             put(new Employee("Dhruv, Super Commando"), 10);
         }
 
-        Stack<String> stack = new Stack<String>();
-        String t = stack.push("abc");
+        // Stack<String> stack = new Stack<String>();
+        // String t = stack.push("abc");
 
     };
 
