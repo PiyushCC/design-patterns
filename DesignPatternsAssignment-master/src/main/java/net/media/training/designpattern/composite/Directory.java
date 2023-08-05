@@ -9,39 +9,31 @@ import java.util.List;
  * Time: 9:18:51 PM
  * To change this template use pre_refactoring.File | Settings | pre_refactoring.File Templates.
  */
-public class Directory {
+public class Directory implements FileObject{
     private final String name;
-    private final List<File> files;
-    private final List<Directory> directories;
+    //private final List<File> files;
+    //private final List<Directory> directories;
+    private final List<FileObject> subFileObjects;
     private Directory parent;
 
     public String getName() {
         return name;
     }
 
-    public Directory(String name, List<File> files, List<Directory> directories) {
+    public Directory(String name, List<FileObject> subFileObjects) {
         this.name = name;
-        this.files = files;
-        this.directories = directories;
+        this.subFileObjects = subFileObjects;
 
-        for (Directory directory : directories) {
-            directory.setParent(this);
-        }
-
-        for (File file : files) {
-            file.setParent(this);
+        for (FileObject fileObject : subFileObjects) {
+            fileObject.setParent(this);
         }
     }
 
-    public int getSize(Directory directoryToSize) {
+    public int getSize(Directory directory) {
         int sum = 0;
 
-        for (File file : directoryToSize.getFiles()) {
-            sum += file.getSize();
-        }
-
-        for (Directory directory : directoryToSize.getDirectories()) {
-            sum += getSize(directory);
+        for(FileObject fileObject: directory.getSubFileObjects()) {
+            sum += fileObject.getSize();
         }
 
         return sum;
@@ -56,14 +48,8 @@ public class Directory {
     }
 
     public void delete(Directory directoryToDelete) {
-        while (directoryToDelete.getFiles().size() > 0) {
-            File file = directoryToDelete.getFiles().get(0);
-            file.getParent().removeEntry(file);
-        }
-
-        while (directoryToDelete.getDirectories().size() > 0) {
-            Directory directory = directoryToDelete.getDirectories().get(0);
-            delete(directory);
+        for (FileObject fileObject : directoryToDelete.getSubFileObjects()) {
+            fileObject.delete();
         }
 
         directoryToDelete.getParent().removeEntry(directoryToDelete);
@@ -73,30 +59,20 @@ public class Directory {
         delete(this);
     }
 
-    public void removeEntry(File file) {
-        files.remove(file);
+    public void removeEntry(FileObject fileObject) {
+        subFileObjects.remove(fileObject);
     }
 
-    public void removeEntry(Directory directory) {
-        directories.remove(directory);
+    public void add(FileObject fileObject) {
+        subFileObjects.add(fileObject);
     }
-
-    public void add(Directory directory) {
-        directories.add(directory);
-    }
+    
 
     private boolean fileExists(String name, Directory directoryToSearch) {
-        for (File file : directoryToSearch.getFiles()) {
-            if (file.getName().equals(name)) {
-                return true;
-            }
-        }
-
-        for (Directory directory : directoryToSearch.getDirectories()) {
-            if (fileExists(name, directory))
+        for (FileObject fileObject : directoryToSearch.getSubFileObjects()) {
+            if(fileObject.inFile(name))
                 return true;
         }
-
         return false;
     }
 
@@ -109,33 +85,29 @@ public class Directory {
     }
 
     private boolean directoryExists(String name, Directory directoryToSearch) {
-        if (directoryToSearch.getName().equals(name))
-            return true;
-
-        for (Directory directory : directoryToSearch.getDirectories()) {
-            if (directory.getName().equals(name)) {
+        for (FileObject fileObject : directoryToSearch.getSubFileObjects()) {
+            if(fileObject.inDirectory(name))
                 return true;
-            }
         }
-
-        for (Directory directory : directories) {
-            if (directory.fileExists(name)) {
-                return true;
-            }
-        }
-
         return false;
     }
 
-    public List<File> getFiles() {
-        return files;
-    }
-
-    public List<Directory> getDirectories() {
-        return directories;
+    public List<FileObject> getSubFileObjects() {
+        return subFileObjects;
     }
 
     public Directory getParent() {
         return parent;
     }
+
+    @Override
+    public boolean inFile(String name) {
+        return fileExists(name, this);
+    }
+
+    @Override
+    public boolean inDirectory(String name) {
+        return this.getName()==name ? true : directoryExists(name, this);
+    }
+
 }

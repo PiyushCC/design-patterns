@@ -7,7 +7,7 @@ package net.media.training.designpattern.composite;
  * Time: 9:18:04 PM
  * To change this template use pre_refactoring.File | Settings | pre_refactoring.File Templates.
  */
-public class File {
+public class File implements FileObject{
     private final String name;
     private int size;
     private Directory parent;
@@ -31,5 +31,21 @@ public class File {
 
     public Directory getParent() {
         return parent;
+    }
+
+    @Override
+    public void delete() {
+        this.getParent().removeEntry(this);
+    }
+
+    @Override
+    public boolean inFile(String name) {
+        return this.getName()==name ? true : false;
+    }
+
+    @Override
+    public boolean inDirectory(String name) {
+        return false;
+
     }
 }
