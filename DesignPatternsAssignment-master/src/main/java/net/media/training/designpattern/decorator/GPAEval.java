@@ -7,9 +7,23 @@ package net.media.training.designpattern.decorator;
  * Time: 10:26:23 AM
  * To change this template use File | Settings | File Templates.
  */
-public class GPAEval implements Criteria {
+public class GPAEval extends CriteriaDecorator {
+    Criteria criteria;
+
+    public GPAEval(Criteria criteria) {
+        this.criteria = criteria;
+    }
+
+
+
+    public GPAEval() {
+    }
+
+
+
     public boolean evaluate(Application theApp) {
         System.out.println("GPAEval called");
-        return theApp.getGpa() > 8;
+        return criteria.evaluate(theApp) && theApp.getGpa() > 8;
+        //return theApp.getGpa() > 8;
     }
 }
