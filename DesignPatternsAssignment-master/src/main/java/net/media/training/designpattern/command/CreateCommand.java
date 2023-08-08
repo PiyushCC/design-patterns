@@ -11,4 +11,9 @@ public class CreateCommand implements Command {
     public void execute() {
         MyActions.create(this.fileName, "hello world");
     }
+
+    @Override
+    public void undo() {
+        MyActions.delete(fileName);
+    }
 }

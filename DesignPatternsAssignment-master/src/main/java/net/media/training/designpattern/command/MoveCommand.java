@@ -13,4 +13,10 @@ public class MoveCommand implements Command{
     public void execute() {
         MyActions.move(fileName, newPath);
     }
+
+
+    @Override
+    public void undo() {
+        MyActions.move(newPath, fileName);
+    }
 }

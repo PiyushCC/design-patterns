@@ -12,5 +12,10 @@ public class UpdateCommand implements Command{
         MyActions.update(fileName, "new hello world");
     }
 
+	@Override
+	public void undo() {
+		MyActions.update(fileName, "hello world");
+	}
+
 
 }

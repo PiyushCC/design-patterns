@@ -17,136 +17,120 @@ public class HelloWorldManipulator {
     UpdateCommand updateCommand;
     DeleteCommand deleteCommand;
     MoveCommand moveCommand;
+    Invoker invoker;
 
     public void fixManipulate(final String fileName, final String newPath) {
-        int cnt = 0;
-        try {
-            //create(fileName, "hello world");
-            createCommand = new CreateCommand(fileName);
-            createCommand.execute();
-            cnt = 1;
-            //update(fileName, "new hello world");
-            updateCommand = new UpdateCommand(fileName);
-            updateCommand.execute();
-            cnt = 2;
-            //move(fileName, newPath);
-            moveCommand = new MoveCommand(fileName, newPath);
-            moveCommand.execute();
-            cnt = 3;
-        } catch (Exception e) {
-            switch (cnt) {
-                case 3:
-                    //move(newPath, fileName);
-                    moveCommand = new MoveCommand(newPath, fileName);
-                    moveCommand.execute();
-                case 2:
-                    //update(fileName, "hello world");
-                    updateCommand = new UpdateCommand(fileName);
-                    updateCommand.execute();
-                case 1:
-                    //delete(fileName);
-                    deleteCommand = new DeleteCommand(fileName);
-                    deleteCommand.execute();
+        invoker = new Invoker(new CreateCommand(fileName));
+        invoker.invoke();
 
-            }
-        }
+        invoker.command = new UpdateCommand(fileName);
+        invoker.invoke();
+
+        invoker.command = new MoveCommand(fileName, newPath);
+        invoker.invoke();
     }
 
     public void brokenManipulate(String fileName, String newPath) {
-        int cnt = 0;
-        try {
-            //create(fileName, "hello world");
-            createCommand = new CreateCommand(fileName);
-            createCommand.execute();
-            cnt = 1;
-            //update(fileName, "new hello world");
-            updateCommand = new UpdateCommand(fileName);
-            updateCommand.execute();
-            cnt = 2;
-            //move(fileName, newPath);
-            moveCommand = new MoveCommand(fileName, newPath);
-            moveCommand.execute();
-            cnt = 3;
-            //create(fileName, "hello world");
-            createCommand = new CreateCommand(fileName);
-            createCommand.execute();
-            cnt = 4;
-            //create(fileName, "hello world");
-            createCommand = new CreateCommand(fileName);
-            createCommand.execute();
-            cnt = 5;
-        } catch (Exception e) {
-            switch (cnt) {
-                case 5:
-                    //delete(fileName);
-                    deleteCommand = new DeleteCommand(fileName);
-                    deleteCommand.execute();
-                case 4:
-                    //delete(fileName);
-                    deleteCommand = new DeleteCommand(fileName);
-                    deleteCommand.execute();
-                case 3:
-                    //move(newPath, fileName);
-                    moveCommand = new MoveCommand(newPath, fileName);
-                    moveCommand.execute();
-                case 2:
-                    //update(fileName, "hello world");
-                    updateCommand = new UpdateCommand(fileName);
-                    updateCommand.execute();
-                case 1:
-                    //delete(fileName);
-                    deleteCommand = new DeleteCommand(fileName);
-                    deleteCommand.execute();
+        invoker = new Invoker(new CreateCommand(fileName));
+        invoker.invoke();
 
-            }
-        }
+        invoker.command = new UpdateCommand(fileName);
+        invoker.invoke();
 
+        invoker.command = new MoveCommand(fileName, newPath);
+        invoker.invoke();
 
+        invoker.command = new CreateCommand(fileName);
+        invoker.invoke();
+
+        invoker.command = new CreateCommand(fileName);
+        invoker.invoke();
     }
 
-    // private void delete(String fileName) {
-    //     File file = new File(fileName);
-    //     file.delete();
-    // }
-
-    // private void move(String source, String destination) {
-    //     File file = new File(source);
-    //     if (!file.exists())
-    //         throw new RuntimeException("File does not exist");
-    //     if (!file.renameTo(new File(destination)))
-    //         throw new RuntimeException("Rename failed");
-    // }
-
-    // private void update(String fileName, String content) {
-    //     File file = new File(fileName);
-    //     if (!file.exists())
-    //         throw new RuntimeException("File: " + fileName + " does not exist");
+    // public void fixManipulate(final String fileName, final String newPath) {
+    //     int cnt = 0;
     //     try {
+    //         //create(fileName, "hello world");
+    //         //createCommand = new CreateCommand(fileName);
+    //         //createCommand.execute();
+    //         cnt = 1;
+    //         //update(fileName, "new hello world");
+    //         updateCommand = new UpdateCommand(fileName);
+    //         updateCommand.execute();
+    //         cnt = 2;
+    //         //move(fileName, newPath);
+    //         moveCommand = new MoveCommand(fileName, newPath);
+    //         moveCommand.execute();
+    //         cnt = 3;
+    //     } catch (Exception e) {
+    //         switch (cnt) {
+    //             case 3:
+    //                 //move(newPath, fileName);
+    //                 moveCommand = new MoveCommand(newPath, fileName);
+    //                 moveCommand.execute();
+    //             case 2:
+    //                 //update(fileName, "hello world");
+    //                 updateCommand = new UpdateCommand(fileName);
+    //                 updateCommand.execute();
+    //             case 1:
+    //                 //delete(fileName);
+    //                 deleteCommand = new DeleteCommand(fileName);
+    //                 deleteCommand.execute();
 
-    //         PrintWriter writer = new PrintWriter(file);
-    //         writer.write(content);
-    //         writer.close();
-    //     } catch (FileNotFoundException e) {
-    //         throw new RuntimeException(e);
-    //     } catch (IOException e) {
-    //         throw new RuntimeException(e);
-    //     }
-
-    // }
-
-    
-
-    // private void create(String fileName, String content) {
-    //     File file = new File(fileName);
-    //     if (file.exists())
-    //         throw new RuntimeException("File already exist");
-    //     try {
-    //         file.createNewFile();
-    //         PrintWriter writer = new PrintWriter(file);
-    //         writer.write(content);
-    //         writer.close();
-    //     } catch (IOException e) {
-    //         throw new RuntimeException(e);
+    //         }
     //     }
     // }
+
+    // public void brokenManipulate(String fileName, String newPath) {
+    //     int cnt = 0;
+    //     try {
+    //         //create(fileName, "hello world");
+    //         createCommand = new CreateCommand(fileName);
+    //         createCommand.execute();
+    //         cnt = 1;
+    //         //update(fileName, "new hello world");
+    //         updateCommand = new UpdateCommand(fileName);
+    //         updateCommand.execute();
+    //         cnt = 2;
+    //         //move(fileName, newPath);
+    //         moveCommand = new MoveCommand(fileName, newPath);
+    //         moveCommand.execute();
+    //         cnt = 3;
+    //         //create(fileName, "hello world");
+    //         createCommand = new CreateCommand(fileName);
+    //         createCommand.execute();
+    //         cnt = 4;
+    //         //create(fileName, "hello world");
+    //         createCommand = new CreateCommand(fileName);
+    //         createCommand.execute();
+    //         cnt = 5;
+    //     } catch (Exception e) {
+    //         switch (cnt) {
+    //             case 5:
+    //                 //delete(fileName);
+    //                 deleteCommand = new DeleteCommand(fileName);
+    //                 deleteCommand.execute();
+    //             case 4:
+    //                 //delete(fileName);
+    //                 deleteCommand = new DeleteCommand(fileName);
+    //                 deleteCommand.execute();
+    //             case 3:
+    //                 //move(newPath, fileName);
+    //                 moveCommand = new MoveCommand(newPath, fileName);
+    //                 moveCommand.execute();
+    //             case 2:
+    //                 //update(fileName, "hello world");
+    //                 updateCommand = new UpdateCommand(fileName);
+    //                 updateCommand.execute();
+    //             case 1:
+    //                 //delete(fileName);
+    //                 deleteCommand = new DeleteCommand(fileName);
+    //                 deleteCommand.execute();
+
+    //         }
+    //     }
+
+
+    // }
+
 }

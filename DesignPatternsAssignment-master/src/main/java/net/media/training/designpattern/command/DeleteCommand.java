@@ -11,5 +11,10 @@ public class DeleteCommand implements Command{
     public void execute() {
         MyActions.delete(fileName);
     }
+
+    @Override
+    public void undo() {
+        
+    }
     
 }
